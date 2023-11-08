@@ -54,6 +54,8 @@ juce::Result LottieComponent::loadAnimationJson (const juce::String& jsonString,
     currentAnimation = new LottieAnimation (jsonString);
 
     initialiseAnimation (currentAnimation, scaleFactor);
+    
+    currentScaleFactor = scaleFactor;
 
     return currentAnimation->isValid()
         ? juce::Result::ok()
@@ -89,8 +91,10 @@ juce::Result LottieComponent::loadAnimationLottie (const juce::File& lottieFile,
 
     currentAnimation = lottie->loadAnimation (0);
 
-    currentLottieFile = std::move (lottie);
     initialiseAnimation (currentAnimation, scaleFactor);
+
+    currentLottieFile = std::move (lottie);
+    currentScaleFactor = scaleFactor;
 
     return juce::Result::ok();
 }
@@ -109,8 +113,10 @@ juce::Result LottieComponent::loadAnimationLottie (std::unique_ptr<juce::InputSt
 
     currentAnimation = lottie->loadAnimation (0);
 
-    currentLottieFile = std::move (lottie);
     initialiseAnimation (currentAnimation, scaleFactor);
+
+    currentLottieFile = std::move (lottie);
+    currentScaleFactor = scaleFactor;
 
     return juce::Result::ok();
 }
@@ -126,8 +132,10 @@ juce::Result LottieComponent::loadAnimationLottie (const juce::File& lottieFile,
     if (currentAnimation == nullptr)
         return juce::Result::fail("Unable to find animation in lottie file");
 
-    currentLottieFile = std::move (lottie);
     initialiseAnimation (currentAnimation, scaleFactor);
+
+    currentLottieFile = std::move (lottie);
+    currentScaleFactor = scaleFactor;
 
     return juce::Result::ok();
 }
@@ -146,8 +154,10 @@ juce::Result LottieComponent::loadAnimationLottie (std::unique_ptr<juce::InputSt
     if (currentAnimation == nullptr)
         return juce::Result::fail("Unable to find animation in lottie file");
 
-    currentLottieFile = std::move (lottie);
     initialiseAnimation (currentAnimation, scaleFactor);
+
+    currentLottieFile = std::move (lottie);
+    currentScaleFactor = scaleFactor;
 
     return juce::Result::ok();
 }
@@ -228,37 +238,59 @@ void LottieComponent::setDirection (int newDirection)
 }
 
 //==============================================================================
-void LottieComponent::play()
+juce::Result LottieComponent::play()
 {
     if (currentAnimation == nullptr)
-        return;
-
+        return juce::Result::fail ("Invalid or not loaded animation");
+    
     if (frameRate > 0.0)
         startTimerHz (static_cast<int> (frameRate));
-
+    
     listeners.call (&Listener::animationStarted, this, currentAnimation, frameRate);
+    
+    return juce::Result::ok();
 }
 
-void LottieComponent::stop()
+juce::Result LottieComponent::play (juce::StringRef animationId)
+{
+    if (currentLottieFile == nullptr)
+        return juce::Result::fail ("Invalid or not available lottie file");
+    
+    currentAnimation = currentLottieFile->loadAnimation (animationId);
+
+    if (currentAnimation == nullptr)
+        return juce::Result::fail("Unable to find animation in lottie file");
+
+    initialiseAnimation (currentAnimation, currentScaleFactor);
+    currentFrame = 0;
+    
+    return play();
+}
+
+juce::Result LottieComponent::stop()
 {
     if (currentAnimation == nullptr)
-        return;
-
+        return juce::Result::fail ("Invalid or not loaded animation");
+    
     listeners.call (&Listener::animationStopped, this, currentAnimation, getCurrentFrameNormalised());
-
+    
     stopTimer();
+    
+    return juce::Result::ok();
 }
 
-void LottieComponent::reset()
+juce::Result LottieComponent::reset()
 {
     if (currentAnimation == nullptr)
-        return;
+        return juce::Result::fail ("Invalid or not loaded animation");
 
     currentFrame = 0;
 
     listeners.call (&Listener::animationReset, this, currentAnimation);
 
     repaint();
+
+    return juce::Result::ok();
 }
 
 //==============================================================================

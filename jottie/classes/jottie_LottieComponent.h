@@ -211,17 +211,18 @@ public:
     /**
      * @brief Start playing the animation.
      */
-    void play();
+    juce::Result play();
+    juce::Result play (juce::StringRef animationName);
 
     /**
      * @brief Stop the animation.
      */
-    void stop();
+    juce::Result stop();
 
     /**
      * @brief Reset the animation to its initial state.
      */
-    void reset();
+    juce::Result reset();
 
     //==============================================================================
     /**
@@ -318,6 +319,7 @@ private:
     LottieFile::Ptr currentLottieFile;
     juce::ListenerList<Listener> listeners;
     juce::Colour backgroundColour = juce::Colours::black;
+    float currentScaleFactor = 1.0f;
     int currentFrame = 0;
     double frameRate = 0.0;
     int direction = 1;

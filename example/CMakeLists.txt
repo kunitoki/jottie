@@ -2,7 +2,18 @@ cmake_minimum_required(VERSION 3.27)
 
 project(jottie_example VERSION 1.0.0)
 
-add_subdirectory(../../JUCE JUCE)
+set_property(GLOBAL PROPERTY USE_FOLDERS YES)
+option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
+
+include(FetchContent)
+
+FetchContent_Declare(
+    JUCE
+    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+    GIT_TAG master
+)
+FetchContent_MakeAvailable(JUCE)
+
 add_subdirectory(../ jottie)
 
 juce_add_gui_app(jottie_example
@@ -15,7 +26,7 @@ juce_add_gui_app(jottie_example
 juce_generate_juce_header(jottie_example)
 
 juce_add_binary_data(jottie_example_data SOURCES
-    assets/xmas.lottie)
+    assets/cook.lottie)
 
 target_sources(jottie_example PRIVATE
     sources/Main.cpp
@@ -30,12 +41,11 @@ target_compile_definitions(jottie_example PRIVATE
     JUCE_SILENCE_XCODE_15_LINKER_WARNING=1)
 
 target_link_libraries(jottie_example PRIVATE
-    juce::juce_build_tools
-    juce::juce_cryptography
-    juce::juce_gui_extra
-    juce::juce_opengl
     jottie::jottie
     jottie_example_data
+    juce::juce_build_tools
+    juce::juce_gui_extra
+    juce::juce_opengl
     juce::juce_recommended_config_flags
     juce::juce_recommended_lto_flags
     juce::juce_recommended_warning_flags)

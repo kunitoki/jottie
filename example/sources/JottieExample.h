@@ -12,10 +12,11 @@ public:
         //openGLContext.attachTo (*getTopLevelComponent());
         
         addAndMakeVisible (lottieComponent);
+        lottieComponent.setInterceptsMouseClicks (false, false);
         lottieComponent.setBackgroundColour (juce::Colours::transparentBlack);
         
         lottieComponent.loadAnimationLottie (
-            std::make_unique<juce::MemoryInputStream> (BinaryData::xmas_lottie, BinaryData::xmas_lottieSize, false), 1.0f);
+            std::make_unique<juce::MemoryInputStream> (BinaryData::cook_lottie, BinaryData::cook_lottieSize, false), "cook1", 1.0f);
 
         lottieComponent.setFrameRate (lottieComponent.getFrameRate() * 1.5);
         
@@ -37,15 +38,7 @@ public:
 
     void paint (juce::Graphics& g) override
     {
-        juce::ColourGradient gradient
-        {
-            juce::Colour (100, 210, 220), 0.0f, static_cast<float> (getHeight()),
-            juce::Colour (240, 55, 250), static_cast<float> (getWidth()), 0.0f,
-            false
-        };
-
-        g.setGradientFill (gradient);
-        g.fillAll();
+        g.fillAll(juce::Colours::white);
     }
 
     void resized() override
@@ -53,9 +46,21 @@ public:
         lottieComponent.setBounds (getLocalBounds());
     }
 
+    void mouseDown (const juce::MouseEvent& ev) override
+    {
+        juce::ignoreUnused (ev);
+        
+        currentAnimation = (currentAnimation + 1) % 4;
+        
+        const juce::StringRef animations[] = { "cook1", "cook2", "cook3", "cook4" };
+        
+        lottieComponent.play (animations [currentAnimation]);
+    }
+
 private:
     juce::OpenGLContext openGLContext;
-    jottie::LottieComponent lottieComponent; 
+    jottie::LottieComponent lottieComponent;
+    int currentAnimation = 1;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JottieExampleComponent)
 };
