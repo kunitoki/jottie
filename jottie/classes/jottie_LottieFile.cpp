@@ -73,21 +73,21 @@ juce::Result parseAnimationIds (juce::ZipFile& zipFile, juce::StringArray& anima
  } // namespace
 
 //==============================================================================
-LottieFile::LottieFile (const juce::File& lottieFile,
-                        std::unique_ptr<juce::ZipFile> lottieZip,
-                        juce::StringArray animationIds)
-    : lottieFile (lottieFile)
-    , lottieZip (std::move (lottieZip))
-    , animationIds (std::move (animationIds))
+LottieFile::LottieFile (const juce::File& newLottieFile,
+                        std::unique_ptr<juce::ZipFile> newLottieZip,
+                        juce::StringArray newAnimationIds)
+    : lottieFile (newLottieFile)
+    , lottieZip (std::move (newLottieZip))
+    , animationIds (std::move (newAnimationIds))
 {
 }
 
-LottieFile::LottieFile (std::unique_ptr<juce::InputStream> lottieStream,
-                        std::unique_ptr<juce::ZipFile> lottieZip,
-                        juce::StringArray animationIds)
-    : lottieStream (std::move (lottieStream))
-    , lottieZip (std::move (lottieZip))
-    , animationIds (std::move (animationIds))
+LottieFile::LottieFile (std::unique_ptr<juce::InputStream> newLottieStream,
+                        std::unique_ptr<juce::ZipFile> newLottieZip,
+                        juce::StringArray newAnimationIds)
+    : lottieStream (std::move (newLottieStream))
+    , lottieZip (std::move (newLottieZip))
+    , animationIds (std::move (newAnimationIds))
 {
 }
 

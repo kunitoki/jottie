@@ -183,7 +183,7 @@ void LottieAnimation::setSize (int width, int height)
         canvas = juce::Image (juce::Image::ARGB, newSize.getWidth(), newSize.getHeight(), true);
 
         if (canRenderCurrentFrame())
-            renderCurrentFrame();
+            renderAnimationToImage (animation, canvas, currentFrame);
     }
 }
 

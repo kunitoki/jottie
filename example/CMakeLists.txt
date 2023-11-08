@@ -1,0 +1,41 @@
+cmake_minimum_required(VERSION 3.27)
+
+project(jottie_example VERSION 1.0.0)
+
+add_subdirectory(../../JUCE JUCE)
+add_subdirectory(../ jottie)
+
+juce_add_gui_app(jottie_example
+    BUNDLE_ID                           org.kunitoki.jottie
+    #ICON_BIG                            ${CMAKE_CURRENT_SOURCE_DIR}/Source/BinaryData/Icons/juce_icon.png
+    DOCUMENT_EXTENSIONS                 lottie
+    NEEDS_CURL                          FALSE
+    NEEDS_WEB_BROWSER                   FALSE)
+
+juce_generate_juce_header(jottie_example)
+
+juce_add_binary_data(jottie_example_data SOURCES
+    assets/xmas.lottie)
+
+target_sources(jottie_example PRIVATE
+    sources/Main.cpp
+    sources/JottieExample.h)
+
+target_compile_definitions(jottie_example PRIVATE
+    JUCE_ALLOW_STATIC_NULL_VARIABLES=0
+    JUCE_LOG_ASSERTIONS=1
+    JUCE_STRICT_REFCOUNTEDPOINTER=1
+    JUCE_USE_CURL=0
+    JUCE_WEB_BROWSER=0
+    JUCE_SILENCE_XCODE_15_LINKER_WARNING=1)
+
+target_link_libraries(jottie_example PRIVATE
+    juce::juce_build_tools
+    juce::juce_cryptography
+    juce::juce_gui_extra
+    juce::juce_opengl
+    jottie::jottie
+    jottie_example_data
+    juce::juce_recommended_config_flags
+    juce::juce_recommended_lto_flags
+    juce::juce_recommended_warning_flags)
