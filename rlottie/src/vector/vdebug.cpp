@@ -282,13 +282,13 @@ void VDebug::resize_buffer_if_needed(size_t additional_bytes)
     if (required_size <= m_buffer_size) return;
 
     if (!m_heap_buffer) {
-        m_buffer_size = std::max(static_cast<size_t>(512), required_size);
+        m_buffer_size = (std::max)(static_cast<size_t>(512), required_size);
         m_heap_buffer = std::make_unique<char[]>(m_buffer_size);
         memcpy(m_heap_buffer.get(), m_stack_buffer, m_bytes_used);
         return;
     } else {
         m_buffer_size =
-            std::max(static_cast<size_t>(2 * m_buffer_size), required_size);
+            (std::max)(static_cast<size_t>(2 * m_buffer_size), required_size);
         std::unique_ptr<char[]> new_heap_buffer(new char[m_buffer_size]);
         memcpy(new_heap_buffer.get(), m_heap_buffer.get(), m_bytes_used);
         m_heap_buffer.swap(new_heap_buffer);
@@ -657,9 +657,9 @@ public:
                std::string const& log_file_name, uint32_t log_file_roll_size_mb)
         : m_state(State::INIT),
           m_buffer_base(
-              new RingBuffer(std::max(1u, ngl.ring_buffer_size_mb) * 1024 * 4)),
+              new RingBuffer((std::max)(1u, ngl.ring_buffer_size_mb) * 1024 * 4)),
           m_file_writer(log_directory, log_file_name,
-                        std::max(1u, log_file_roll_size_mb)),
+                        (std::max)(1u, log_file_roll_size_mb)),
           m_thread(&NanoLogger::pop, this)
     {
         m_state.store(State::READY, std::memory_order_release);
@@ -670,7 +670,7 @@ public:
         : m_state(State::INIT),
           m_buffer_base(new QueueBuffer()),
           m_file_writer(log_directory, log_file_name,
-                        std::max(1u, log_file_roll_size_mb)),
+                        (std::max)(1u, log_file_roll_size_mb)),
           m_thread(&NanoLogger::pop, this)
     {
         m_state.store(State::READY, std::memory_order_release);

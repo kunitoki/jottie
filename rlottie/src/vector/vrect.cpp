@@ -60,9 +60,9 @@ VRect VRect::operator&(const VRect &r) const
     if (t1 > b2 || t2 > b1) return VRect();
 
     VRect tmp;
-    tmp.x1 = std::max(l1, l2);
-    tmp.x2 = std::min(r1, r2);
-    tmp.y1 = std::max(t1, t2);
-    tmp.y2 = std::min(b1, b2);
+    tmp.x1 = (std::max)(l1, l2);
+    tmp.x2 = (std::min)(r1, r2);
+    tmp.y1 = (std::max)(t1, t2);
+    tmp.y2 = (std::min)(b1, b2);
     return tmp;
 }

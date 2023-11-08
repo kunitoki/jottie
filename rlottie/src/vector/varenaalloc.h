@@ -167,7 +167,7 @@ private:
     template <typename T>
     char* commonArrayAlloc(uint32_t count) {
         char* objStart;
-        AssertRelease(count <= std::numeric_limits<uint32_t>::max() / sizeof(T));
+        AssertRelease(count <= (std::numeric_limits<uint32_t>::max)() / sizeof(T));
         uint32_t arraySize = ToU32(count * sizeof(T));
         uint32_t alignment = ToU32(alignof(T));
 
@@ -176,7 +176,7 @@ private:
             fCursor = objStart + arraySize;
         } else {
             constexpr uint32_t overhead = sizeof(Footer) + sizeof(uint32_t);
-            AssertRelease(arraySize <= std::numeric_limits<uint32_t>::max() - overhead);
+            AssertRelease(arraySize <= (std::numeric_limits<uint32_t>::max)() - overhead);
             uint32_t totalSize = arraySize + overhead;
             objStart = this->allocObjectWithFooter(totalSize, alignment);
 

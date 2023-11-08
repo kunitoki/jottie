@@ -34,8 +34,8 @@ void VTextureData::setClip(const VRect &clip)
 {
     left = clip.left();
     top = clip.top();
-    right = std::min(clip.right(), int(width())) - 1;
-    bottom = std::min(clip.bottom(), int(height())) - 1;
+    right = (std::min)(clip.right(), int(width())) - 1;
+    bottom = (std::min)(clip.bottom(), int(height())) - 1;
 }
 
 class VGradientCache {
@@ -539,7 +539,7 @@ static inline void process_in_chunk(const VRle::Span *array, size_t size,
         size_t      len = span.len;
         auto        x = span.x;
         while (len) {
-            auto l = std::min(len, buf.size());
+            auto l = (std::min)(len, buf.size());
             process(buf.data(), x, span.y, l, span.coverage);
             x += l;
             len -= l;

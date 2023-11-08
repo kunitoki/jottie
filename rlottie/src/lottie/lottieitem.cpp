@@ -137,7 +137,7 @@ bool renderer::Composition::update(int frameNo, const VSize &size,
     float   sx = float(viewPort.width()) / viewBox.width();
     float   sy = float(viewPort.height()) / viewBox.height();
     if (mKeepAspectRatio) {
-        float scale = std::min(sx, sy);
+        float scale = (std::min)(sx, sy);
         float tx = (viewPort.width() - viewBox.width() * scale) * 0.5f;
         float ty = (viewPort.height() - viewBox.height() * scale) * 0.5f;
         m.translate(tx, ty).scale(scale, scale);

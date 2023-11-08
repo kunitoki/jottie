@@ -363,11 +363,11 @@ static size_t _opIntersect(rle_view &obj, rle_view &clip, Result &result)
             ++spans;
             continue;
         }
-        x = std::max(sx1, cx1);
-        len = std::min(sx2, cx2) - x;
+        x = (std::max)(sx1, cx1);
+        len = (std::min)(sx2, cx2) - x;
         if (len) {
-            out->x = std::max(sx1, cx1);
-            out->len = (std::min(sx2, cx2) - out->x);
+            out->x = (std::max)(sx1, cx1);
+            out->len = ((std::min)(sx2, cx2) - out->x);
             out->y = spans->y;
             out->coverage = divBy255(spans->coverage * clipSpans->coverage);
             ++out;
@@ -421,11 +421,11 @@ static size_t _opIntersect(const VRect &clip, rle_view &obj, Result &result)
             continue;
         }
         if (span.x < minx) {
-            out->len = std::min(span.len - (minx - span.x), maxx - minx + 1);
+            out->len = (std::min)(span.len - (minx - span.x), maxx - minx + 1);
             out->x = minx;
         } else {
             out->x = span.x;
-            out->len = std::min(span.len, uint16_t(maxx - span.x + 1));
+            out->len = (std::min)(span.len, uint16_t(maxx - span.x + 1));
         }
         if (out->len != 0) {
             out->y = span.y;
@@ -495,7 +495,7 @@ void blitSrc(VRle::Span *spans, int count, uint8_t *buffer, int offsetX)
         int    l = spans->len;
         uint8_t *ptr = buffer + x;
         while (l--) {
-            *ptr = std::max(spans->coverage, *ptr);
+            *ptr = (std::max)(spans->coverage, *ptr);
             ptr++;
         }
         spans++;
@@ -575,14 +575,14 @@ size_t SpanMerger::merge(VRle::Span *&aPtr, const VRle::Span *aEnd,
 
     _aStart = aPtr;
     _bStart = bPtr;
-    int lb = std::min(aPtr->x, bPtr->x);
+    int lb = (std::min)(aPtr->x, bPtr->x);
     int y = aPtr->y;
 
     while (aPtr < aEnd && aPtr->y == y) aPtr++;
     while (bPtr < bEnd && bPtr->y == y) bPtr++;
 
-    int ub = std::max((aPtr - 1)->x + (aPtr - 1)->len,
-                      (bPtr - 1)->x + (bPtr - 1)->len);
+    int ub = (std::max)((aPtr - 1)->x + (aPtr - 1)->len,
+                        (bPtr - 1)->x + (bPtr - 1)->len);
     int length = (lb < 0) ? ub + lb : ub - lb;
 
     if (length <= 0 || size_t(length) >= _buffer.max_size()) {

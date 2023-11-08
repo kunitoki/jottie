@@ -4823,6 +4823,9 @@ extern "C" {
 #include <sys/stat.h>
 
 #if defined(_MSC_VER)
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #ifndef MINIZ_NO_TIME
 #include <sys/utime.h>
@@ -4908,6 +4911,9 @@ static int mz_mkdir(const char *pDirname) {
 #define MZ_MKDIR(d) mz_mkdir(d)
 
 #elif defined(__MINGW32__) || defined(__MINGW64__)
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #ifndef MINIZ_NO_TIME
 #include <sys/utime.h>

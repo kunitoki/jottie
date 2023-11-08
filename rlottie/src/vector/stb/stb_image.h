@@ -308,6 +308,9 @@ RECENT REVISION HISTORY:
 #endif // STBI_NO_STDIO
 
 #if defined _WIN32 || defined __CYGWIN__
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #endif  // defined _WIN32 || defined __CYGWIN__
 

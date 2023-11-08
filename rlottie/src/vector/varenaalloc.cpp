@@ -118,7 +118,7 @@ void VArenaAlloc::ensureSpace(uint32_t size, uint32_t alignment) {
     } else {
         minAllocationSize = maxSize;
     }
-    uint32_t allocationSize = std::max(objSizeAndOverhead, minAllocationSize);
+    uint32_t allocationSize = (std::max)(objSizeAndOverhead, minAllocationSize);
 
     // Round up to a nice size. If > 32K align to 4K boundary else up to max_align_t. The > 32K
     // heuristic is from the JEMalloc behavior.

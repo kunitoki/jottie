@@ -116,7 +116,7 @@ struct PathData {
         {
             return;
         }
-        auto size = std::min(start.mPoints.size(), end.mPoints.size());
+        auto size = (std::min)(start.mPoints.size(), end.mPoints.size());
         /* reserve exact memory requirement at once
          * ptSize = size + 1(size + close)
          * elmSize = size/3 cubic + 1 move + 1 close
@@ -1056,8 +1056,8 @@ private:
         assert(start >= 0);
         assert(end >= 0);
         Segment s;
-        s.start = std::min(start, end);
-        s.end = std::max(start, end);
+        s.start = (std::min)(start, end);
+        s.end = (std::max)(start, end);
         return s;
     }
     Segment loop(float start, float end) const
@@ -1065,8 +1065,8 @@ private:
         assert(start >= 0);
         assert(end >= 0);
         Segment s;
-        s.start = std::max(start, end);
-        s.end = std::min(start, end);
+        s.start = (std::max)(start, end);
+        s.end = (std::min)(start, end);
         return s;
     }
 

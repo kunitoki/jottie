@@ -126,6 +126,9 @@
 #include <intrin.h>
 #if SSE2NEON_INCLUDE_WINDOWS_H
 #include <processthreadsapi.h>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #endif
 
