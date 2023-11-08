@@ -3,6 +3,7 @@
  *
  * This file is part of the `jottie` library.
  *
+ * Standalone JUCE module https://github.com/kunitoki/jottie
  * Copyright (c) 2023 Lucio Asnaghi
  *
  * Originally created in HISE https://github.com/christophhart/HISE/tree/master/hi_rlottie

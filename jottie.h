@@ -3,6 +3,7 @@
  *
  * This file is part of the `jottie` library.
  *
+ * Standalone JUCE module https://github.com/kunitoki/jottie
  * Copyright (c) 2023 Lucio Asnaghi
  *
  * Originally created in HISE https://github.com/christophhart/HISE/tree/master/hi_rlottie
@@ -38,7 +39,7 @@
   version:          1.0.0
   name:             jottie
   description:      jottie is a juce port of rLottie.
-  website:          https://github.com/Samsung/rlottie
+  website:          https://github.com/kunitoki/jottie
   license:          MIT
 
   dependencies:     juce_core juce_graphics juce_events juce_gui_basics
