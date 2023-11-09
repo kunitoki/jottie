@@ -60,8 +60,7 @@ public:
 private:
     juce::OpenGLContext openGLContext;
     jottie::LottieComponent lottieComponent;
-    int currentAnimation = 1;
+    int currentAnimation = 0;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JottieExampleComponent)
 };
-

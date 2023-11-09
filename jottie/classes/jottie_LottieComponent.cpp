@@ -89,11 +89,12 @@ juce::Result LottieComponent::loadAnimationLottie (const juce::File& lottieFile,
     if (lottie->getNumAnimations() == 0)
         return juce::Result::fail("Unable to find animation in lottie file");
 
-    currentAnimation = lottie->loadAnimation (0);
+    auto animation = lottie->loadAnimation (0);
 
-    initialiseAnimation (currentAnimation, scaleFactor);
+    initialiseAnimation (animation, scaleFactor);
 
     currentLottieFile = std::move (lottie);
+    currentAnimation = std::move (animation);
     currentScaleFactor = scaleFactor;
 
     return juce::Result::ok();
@@ -111,11 +112,12 @@ juce::Result LottieComponent::loadAnimationLottie (std::unique_ptr<juce::InputSt
     if (lottie->getNumAnimations() == 0)
         return juce::Result::fail("Unable to find animation in lottie file");
 
-    currentAnimation = lottie->loadAnimation (0);
+    auto animation = lottie->loadAnimation (0);
 
-    initialiseAnimation (currentAnimation, scaleFactor);
+    initialiseAnimation (animation, scaleFactor);
 
     currentLottieFile = std::move (lottie);
+    currentAnimation = std::move (animation);
     currentScaleFactor = scaleFactor;
 
     return juce::Result::ok();
@@ -127,14 +129,14 @@ juce::Result LottieComponent::loadAnimationLottie (const juce::File& lottieFile,
     if (lottie == nullptr)
         return juce::Result::fail("Unable to open lottie file for reading");
 
-    currentAnimation = lottie->loadAnimation (animationId);
-
-    if (currentAnimation == nullptr)
+    auto animation = lottie->loadAnimation (animationId);
+    if (animation == nullptr)
         return juce::Result::fail("Unable to find animation in lottie file");
 
-    initialiseAnimation (currentAnimation, scaleFactor);
+    initialiseAnimation (animation, scaleFactor);
 
     currentLottieFile = std::move (lottie);
+    currentAnimation = std::move (animation);
     currentScaleFactor = scaleFactor;
 
     return juce::Result::ok();
@@ -149,14 +151,14 @@ juce::Result LottieComponent::loadAnimationLottie (std::unique_ptr<juce::InputSt
     if (lottie == nullptr)
         return juce::Result::fail("Unable to open lottie file for reading");
 
-    currentAnimation = lottie->loadAnimation (animationId);
-
-    if (currentAnimation == nullptr)
+    auto animation = lottie->loadAnimation (animationId);
+    if (animation == nullptr)
         return juce::Result::fail("Unable to find animation in lottie file");
 
-    initialiseAnimation (currentAnimation, scaleFactor);
+    initialiseAnimation (animation, scaleFactor);
 
     currentLottieFile = std::move (lottie);
+    currentAnimation = std::move (animation);
     currentScaleFactor = scaleFactor;
 
     return juce::Result::ok();
@@ -256,13 +258,13 @@ juce::Result LottieComponent::play (juce::StringRef animationId)
     if (currentLottieFile == nullptr)
         return juce::Result::fail ("Invalid or not available lottie file");
     
-    currentAnimation = currentLottieFile->loadAnimation (animationId);
-
-    if (currentAnimation == nullptr)
+    auto animation = currentLottieFile->loadAnimation (animationId);
+    if (animation == nullptr)
         return juce::Result::fail("Unable to find animation in lottie file");
 
-    initialiseAnimation (currentAnimation, currentScaleFactor);
-    currentFrame = 0;
+    initialiseAnimation (animation, currentScaleFactor);
+
+    currentAnimation = std::move (animation);
     
     return play();
 }
@@ -374,10 +376,10 @@ void LottieComponent::initialiseAnimation (LottieAnimation::Ptr animation, float
     if (scaleFactor > 0.0f)
         animation->setScaleFactor (scaleFactor);
 
-    resetFrameRate();
+    frameRate = animation->getFrameRate();
     currentFrame = 0;
 
-    resized();
+    animation->setSize (getWidth(), getHeight());
 }
 
 } // namespace jottie
