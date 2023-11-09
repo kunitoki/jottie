@@ -28,7 +28,8 @@
 
 V_BEGIN_NAMESPACE
 
-static constexpr float tolerance = 0.1f;
+static constexpr float dash_tolerance = 0.1f;
+
 VDasher::VDasher(const float *dashArray, size_t size)
 {
     mDashArray = reinterpret_cast<const VDasher::Dash *>(dashArray);
@@ -135,13 +136,13 @@ void VDasher::lineTo(const VPointF &p)
             mCurPt = line.p1();
         }
         // handle remainder
-        if (length > tolerance) {
+        if (length > dash_tolerance) {
             mCurrentLength -= length;
             addLine(line.p2());
         }
     }
 
-    if (mCurrentLength < tolerance) updateActiveSegment();
+    if (mCurrentLength < dash_tolerance) updateActiveSegment();
 
     mCurPt = p;
 }
@@ -178,13 +179,13 @@ void VDasher::cubicTo(const VPointF &cp1, const VPointF &cp2, const VPointF &e)
             mCurPt = b.pt1();
         }
         // handle remainder
-        if (bezLen > tolerance) {
+        if (bezLen > dash_tolerance) {
             mCurrentLength -= bezLen;
             addCubic(b.pt2(), b.pt3(), b.pt4());
         }
     }
 
-    if (mCurrentLength < tolerance) updateActiveSegment();
+    if (mCurrentLength < dash_tolerance) updateActiveSegment();
 
     mCurPt = e;
 }
