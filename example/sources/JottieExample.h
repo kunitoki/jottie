@@ -4,7 +4,9 @@
 #include <JuceHeader.h>
 #include <BinaryData.h>
 
-class JottieExampleComponent : public juce::Component
+class JottieExampleComponent : public juce::Component,
+                               public juce::Timer,
+                               public jottie::LottieComponent::Listener
 {
 public:
     JottieExampleComponent()
@@ -31,14 +33,24 @@ public:
     void visibilityChanged() override
     {
         if (isVisible())
+        {
+            startTimerHz (25);
             lottieComponent.play();
+        }
         else
+        {
+            stopTimer();
             lottieComponent.stop();
+        }
     }
 
     void paint (juce::Graphics& g) override
     {
-        g.fillAll(juce::Colours::white);
+        g.fillAll (juce::Colours::white);
+
+        g.setColour(juce::Colours::slategrey);
+        g.fillRect (getLocalBounds().removeFromBottom (6).removeFromLeft(
+             proportionOfWidth ((float) lottieComponent.getCurrentFrameNormalised())));
     }
 
     void resized() override
@@ -57,6 +69,11 @@ public:
         lottieComponent.play (animations [currentAnimation]);
     }
 
+    void timerCallback() override
+    {
+        repaint (getLocalBounds().removeFromBottom (6));
+    }
+    
 private:
     juce::OpenGLContext openGLContext;
     jottie::LottieComponent lottieComponent;

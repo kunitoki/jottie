@@ -207,12 +207,12 @@ juce::RelativeTime LottieComponent::getTotalDurationTime() const
 //==============================================================================
 void LottieComponent::setFrameRate(double newFrameRate)
 {
-    frameRate = juce::jlimit (0.0, 120.0, newFrameRate);
+    currentFrameRate = juce::jlimit (0.0, 120.0, newFrameRate);
 
     if (isTimerRunning())
     {
-        if (frameRate > 0.0)
-            startTimerHz (static_cast<int> (frameRate));
+        if (currentFrameRate > 0.0)
+            startTimerHz (static_cast<int> (currentFrameRate));
         else
             stopTimer();
     }
@@ -220,23 +220,23 @@ void LottieComponent::setFrameRate(double newFrameRate)
 
 double LottieComponent::getFrameRate() const
 {
-    return frameRate;
+    return currentFrameRate;
 }
 
 void LottieComponent::resetFrameRate()
 {
-    frameRate = currentAnimation != nullptr ? currentAnimation->getFrameRate() : 0.0;
+    currentFrameRate = currentAnimation != nullptr ? currentAnimation->getFrameRate() : 0.0;
 }
 
 //==============================================================================
 int LottieComponent::getDirection() const
 {
-    return direction;
+    return currentDirection;
 }
 
 void LottieComponent::setDirection (int newDirection)
 {
-    direction = newDirection < 0 ? -1 : 1;
+    currentDirection = newDirection < 0 ? -1 : 1;
 }
 
 //==============================================================================
@@ -245,10 +245,10 @@ juce::Result LottieComponent::play()
     if (currentAnimation == nullptr)
         return juce::Result::fail ("Invalid or not loaded animation");
     
-    if (frameRate > 0.0)
-        startTimerHz (static_cast<int> (frameRate));
+    if (currentFrameRate > 0.0)
+        startTimerHz (static_cast<int> (currentFrameRate));
     
-    listeners.call (&Listener::animationStarted, this, currentAnimation, frameRate);
+    listeners.call (&Listener::animationStarted, this, currentAnimation, currentFrameRate);
     
     return juce::Result::ok();
 }
@@ -350,7 +350,7 @@ void LottieComponent::timerCallback()
     if (currentAnimation == nullptr || currentAnimation->getNumFrames() == 0)
         return;
 
-    currentFrame += direction;
+    currentFrame += currentDirection;
 
     if (currentFrame < 0)
     {
@@ -376,7 +376,7 @@ void LottieComponent::initialiseAnimation (LottieAnimation::Ptr animation, float
     if (scaleFactor > 0.0f)
         animation->setScaleFactor (scaleFactor);
 
-    frameRate = animation->getFrameRate();
+    currentFrameRate = animation->getFrameRate();
     currentFrame = 0;
 
     animation->setSize (getWidth(), getHeight());

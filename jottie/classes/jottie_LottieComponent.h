@@ -254,7 +254,10 @@ public:
          * @param source The source LottieComponent.
          * @param frameRate The frame rate at which the animation is playing.
          */
-        virtual void animationStarted (LottieComponent* source, LottieAnimation::Ptr animation, double frameRate) = 0;
+        virtual void animationStarted (LottieComponent* source, LottieAnimation::Ptr animation, double frameRate)
+        {
+            juce::ignoreUnused (source, animation, frameRate);
+        }
 
         /**
          * @brief Called when the animation is stopped.
@@ -262,21 +265,30 @@ public:
          * @param source The source LottieComponent.
          * @param normalisedPosition The normalized position where the animation stopped.
          */
-        virtual void animationStopped (LottieComponent* source, LottieAnimation::Ptr animation, double normalisedPosition) = 0;
+        virtual void animationStopped (LottieComponent* source, LottieAnimation::Ptr animation, double normalisedPosition)
+        {
+            juce::ignoreUnused (source, animation, normalisedPosition);
+        }
 
         /**
          * @brief Called when the animation is reset to its initial state.
          *
          * @param source The source LottieComponent.
          */
-        virtual void animationReset (LottieComponent* source, LottieAnimation::Ptr animation) = 0;
+        virtual void animationReset (LottieComponent* source, LottieAnimation::Ptr animation)
+        {
+            juce::ignoreUnused (source, animation);
+        }
 
         /**
          * @brief Called when the animation is completed.
          *
          * @param source The source LottieComponent.
          */
-        virtual void animationCompleted (LottieComponent* source, LottieAnimation::Ptr animation) = 0;
+        virtual void animationCompleted (LottieComponent* source, LottieAnimation::Ptr animation)
+        {
+            juce::ignoreUnused (source, animation);
+        }
     };
 
     /**
@@ -321,8 +333,8 @@ private:
     juce::Colour backgroundColour = juce::Colours::black;
     float currentScaleFactor = 1.0f;
     int currentFrame = 0;
-    double frameRate = 0.0;
-    int direction = 1;
+    double currentFrameRate = 0.0;
+    int currentDirection = 1;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LottieComponent)
 };
