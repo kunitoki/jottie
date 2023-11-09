@@ -54,6 +54,14 @@
 #define JOTTIE_H_INCLUDED
 
 //==============================================================================
+/** Config: JOTTIE_ENABLE_THREAD_SUPPORT
+    If this option is turned on, the low level rLottie library will use multi threading support.
+*/
+#if !defined (JOTTIE_ENABLE_THREAD_SUPPORT)
+ #define JOTTIE_ENABLE_THREAD_SUPPORT 0
+#endif
+
+//==============================================================================
 /** Config: JOTTIE_ENABLE_MODEL_CACHE
     If this option is turned on, the low level rLottie library will cache loaded animation models.
 */
